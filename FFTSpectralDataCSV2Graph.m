@@ -1,4 +1,4 @@
-function FFTSpectralDataCSV2Graph(fftSpectralDataCSVFile, Sampling_Hz)
+function [PowerSpectrum] = FFTSpectralDataCSV2Graph(fftSpectralDataCSVFile, Sampling_Hz)
  
 [fftSpectralData] = fileProcessor(fftSpectralDataCSVFile);
 
@@ -6,8 +6,9 @@ PowerSpectrumSum = 0;
 
 untilEnd_X = (length(fftSpectralData)) / (Sampling_Hz + 1);
 
-DurationPoints_Y = Sampling_Hz + 1;
+DurationPoints_Y = Sampling_Hz + 1; %257
 SpectralPoints = [0:0.5:Sampling_Hz/2];
+length(SpectralPoints)
 
 for j = 1:(untilEnd_X)
     for i = 1:DurationPoints_Y
