@@ -6,9 +6,6 @@ if isempty(Input_File)
     [FileName, FileNamePath]=uigetfile('*.csv','Select P300 file(s)','multiselect','on');
     FileNameCellArray = strcat(FileNamePath, FileName);
     
-    FileNameCellArray
-    whos FileNameCellArray
-    
     if (ischar(FileNameCellArray))
         allData_struct = importdata(FileNameCellArray);
         AllData = allData_struct.data;

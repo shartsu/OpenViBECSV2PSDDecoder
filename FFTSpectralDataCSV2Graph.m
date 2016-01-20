@@ -38,8 +38,8 @@ xlabel('Hz', 'FontSize', 10)
 ylabel('PSD', 'FontSize', 10)
 
 % === X axis ===
-set(ax,'XTick',8:1:22);
-xlim([8 24])
+set(ax,'XTick',9:1:21);
+xlim([9 21])
 % === Y axis ===
 %set(ax,'YTick',-0:0.1:1);
 %ylim([0 1])
