@@ -1,5 +1,4 @@
-function [AveragedEEG, pxxAll, pxx1, pxx2, pxx3, pxx4, f] = EEG2WelchPSD_Stimulation4(...
-    rawEEGSignal, Sampling_Hz)
+function EEG2WelchPSD_Stimulation4(rawEEGSignal, Sampling_Hz)
 
 EEGArray = rawEEGSignal(:, 2:(end-1));
 
@@ -39,10 +38,11 @@ whos Stimulus2_AveragedEEG
 whos Stimulus3_AveragedEEG
 whos Stimulus4_AveragedEEG
 
+% === Welch ===
+
 Fs = Sampling_Hz; % ex. 256
 Window = floor(Sampling_Hz * 1.2); % ex. 512 (2 sec under 256Hz) or 307 (1.2 sec)
-Overlap = floor(Sampling_Hz * 0.3); % ex. 128 (0.5 sec under 256Hz) or 76 (0.3 sec)
-%
+Overlap = round(Sampling_Hz * 0.3); % ex. 128 (0.5 sec under 256Hz) or 77 (0.3 sec)
 %PlotScale = How many plots are needed for a frequency
 PlotScale = 10;
 Scale = Sampling_Hz * PlotScale; 
@@ -54,5 +54,28 @@ Scale = Sampling_Hz * PlotScale;
 [pxx2,f] = pwelch(Stimulus2_AveragedEEG.', Window, Overlap, Scale ,Fs);
 [pxx3,f] = pwelch(Stimulus3_AveragedEEG.', Window, Overlap, Scale ,Fs);
 [pxx4,f] = pwelch(Stimulus4_AveragedEEG.', Window, Overlap, Scale ,Fs);
+
+
+% === figure ===
+figure
+ax = gca;
+hold all;
+axis tight;
+grid on;
+plot(f, 10*log10(pxxAll), '-.b');
+plot(f, 10*log10(pxx1), '-*', f,10*log10(pxx2), '-o', f,10*log10(pxx3), '-x', f,10*log10(pxx4), '-+')
+title('Filtered on OpenViBE')
+legend('AllAve', 'Section#1/BoxLeftUp','Section#2/BoxRightUp', 'Section#3/BoxLeftDown', 'Section#4/BoxRightDown');
+xlabel('Frequency (Hz)')
+ylabel('Magnitude (dB)')
+% === X axis ===
+set(ax,'XTick',0:1:128);
+%xlim([6 22])
+% === Y axis ===
+set(ax,'YTick',-50:0.5:50);
+%ylim([-3 3])
+
+hline = refline([0 0]);
+hline.Color = 'r';
 
 end
