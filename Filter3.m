@@ -11,8 +11,8 @@ function Hd = Filter3
 Fs = 256;  % Sampling Frequency
 
 N   = 4;       % Order
-Fc1 = 11;      % First Cutoff Frequency
-Fc2 = 12.999;  % Second Cutoff Frequency
+Fc1 = 14;      % First Cutoff Frequency
+Fc2 = 15.999;  % Second Cutoff Frequency
 
 % Construct an FDESIGN object and call its BUTTER method.
 h  = fdesign.bandpass('N,F3dB1,F3dB2', N, Fc1, Fc2, Fs);
