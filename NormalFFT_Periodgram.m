@@ -1,43 +1,18 @@
-function NormalFFT_Periodgram(rawEEGSignal, Sampling_Hz)
-
-EEGArray = rawEEGSignal(:, 2:(end-1));
-
-Signals = dot(size(EEGArray(:,1)),[1 0]); %How many plots?
-
-StimulationPoints = length(EEGArray(:,1)); % 6144(6sec) or 12288(12sec) in a file 
-StimulationPointsArray = [0, StimulationPoints*1/4, StimulationPoints*2/4, StimulationPoints*3/4];
-HowManyFiles = Signals / StimulationPoints;
-
-%X = File1,2,3.... Y=Point1, 2, 3, ... ,7680
-for j = 1:HowManyFiles
-    for i = 1:StimulationPoints
-        AveragedEEG(i, j) = mean(EEGArray(i, :));
-    end
-end
-
-whos AveragedEEG
+function NormalFFT_Periodgram(AveragedEEG, AveragedEEG_Filt_SSVEP, AveragedEEG_Filt_P300, Sampling_Hz)
 
 % === % === % === % === Normal FFT for Averaged EEG === % === % === % === % === 
 
 figure
 subplot(1,3,1);
-ax = gca;
-hold all;
-axis tight;
-grid on;
-
-Fs = Sampling_Hz;
-Signal = length(AveragedEEG);
+ax = gca; hold all; axis tight; grid on;
 
 X = fft(AveragedEEG);
 plot(abs(X));
 
-xlim([0 Fs])
+xlim([0 Sampling_Hz])
+set(ax,'XTick',0:10:Sampling_Hz);
 
-set(ax,'XTick',0:10:Fs);
-
-hline = refline([0 0]);
-hline.Color = 'r';
+hline = refline([0 0]); hline.Color = 'r';
 
 title('{\bf Normal FFT}')
 xlabel('Frequency [Hz]')
@@ -45,8 +20,6 @@ ylabel('Magnitude [dB]')
 
 
 % === % === % === % === Normal FFT for Filtered 5-27Hz === % === % === % === % === 
-Hd_SSVEP = Filter_SSVEP;
-AveragedEEG_Filtered_SSVEP = filter(Hd_SSVEP, AveragedEEG);
 
 subplot(1,3,2);
 ax = gca;
@@ -54,47 +27,32 @@ hold all;
 axis tight;
 grid on;
 
-Fs = Sampling_Hz;
-Signal = length(AveragedEEG_Filtered_SSVEP);
-
-X = fft(AveragedEEG_Filtered_SSVEP);
+X = fft(AveragedEEG_Filt_SSVEP); 
 plot(abs(X));
 
-xlim([0 Fs])
+xlim([0 Sampling_Hz])
+set(ax,'XTick',0:10:Sampling_Hz);
 
-set(ax,'XTick',0:10:Fs);
-
-hline = refline([0 0]);
-hline.Color = 'r';
+hline = refline([0 0]); hline.Color = 'r';
 
 title('{\bf Normal FFT for Filtered 5-27Hz}')
 xlabel('Frequency [Hz]')
 ylabel('Magnitude [dB]')
 
-
 % === % === % === % === Normal FFT for Filtered 0.1-9Hz === % === % === % === % === 
-AveragedEEG_DownSampled_64Hz = decimate(AveragedEEG, 4);
-
-Hd_P300 = Filter_P300;
-AveragedEEG_Filtered_P300 = filter(Hd_P300, AveragedEEG_DownSampled_64Hz);
 
 subplot(1,3,3);
-ax = gca;
-hold all;
-axis tight;
-grid on;
+ax = gca; hold all; axis tight; grid on;
 
-Fs64 = Sampling_Hz/4;
-Signal = length(AveragedEEG_Filtered_P300);
+Sampling_Hz64 = Sampling_Hz/4; %Check! Downsampled to 1/4
 
-X = fft(AveragedEEG_Filtered_P300);
+X = fft(AveragedEEG_Filt_P300);
 plot(abs(X));
 
-set(ax,'XTick',0:5:Fs64);
-xlim([0 Fs64])
+set(ax,'XTick',0:5:Sampling_Hz64);
+xlim([0 Sampling_Hz64])
 
-hline = refline([0 0]);
-hline.Color = 'r';
+hline = refline([0 0]); hline.Color = 'r';
 
 title('{\bf Normal FFT for Filtered 0.1-9Hz}')
 xlabel('Frequency [Hz]')
@@ -102,6 +60,7 @@ ylabel('Magnitude [dB]')
 
 % === % === % === % === SFFT spectrogram for Averaged EEG === % === % === % === % === 
 
+%{
 Fs = Sampling_Hz; % ex. 256
 Window = floor(Sampling_Hz * 1.2); % ex. 512 (2 sec under 256Hz) or 307 (1.2 sec)
 Overlap = round(Sampling_Hz * 0.3); % ex. 128 (0.5 sec under 256Hz) or 77 (0.3 sec)
@@ -111,10 +70,7 @@ Scale = Sampling_Hz * PlotScale;
 
 figure
 spectrogram(AveragedEEG.', Window, Overlap, Scale, Fs);
-
-
-% === % === % === % === Welch for Averaged EEG === % === % === % === % === 
-
+%}
 
 % === % === % === % === % === % === % === % === % === % === % === % === 
 %{
