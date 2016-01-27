@@ -1,8 +1,8 @@
 function EEG2WelchPSD_AllDuration(AveragedEEG, AveragedEEG_Filt_SSVEP, AveragedEEG_Filt_P300, Sampling_Hz)
 
 % === % === % === % === Welch for Averaged EEG === % === % === % === % === 
-Window = floor(Sampling_Hz * 2.0); % ex. 512 (2 sec under 256Hz) or 307 (1.2 sec)
-Overlap = round(Sampling_Hz * 0.5); % ex. 128 (0.5 sec under 256Hz) or 77 (0.3 sec)
+Window = floor(Sampling_Hz * 1.0); % ex. 512 (2 sec under 256Hz) or 307 (1.2 sec)
+Overlap = round(Sampling_Hz * 0.25); % ex. 128 (0.5 sec under 256Hz) or 77 (0.3 sec)
 %PlotScale = How many plots are needed for a frequency
 PlotScale = 10;
 Scale = Sampling_Hz * PlotScale; 
@@ -30,7 +30,7 @@ hold off
 set(ax,'XTick',0:5:256);
 xlabel('Frequency (Hz)')
 ylabel('Magnitude (dB)')
-legend('pxx-Normal', 'pxx-SSVEP(5-27Hz)', 'pxx-P300(64Hz & 0.1-9Hz)') 
+legend('pxx-Normal(1-16Ch, onlyg.tecFilt)', 'pxx-SSVEP(9-16Ch, BP5-27Hz)', 'pxx-P300(1-8Ch, BP0.1-9Hz, Fs=64Hz)') 
 xlim([0 256])
 
 end

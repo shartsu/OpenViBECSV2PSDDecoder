@@ -1,4 +1,4 @@
-function main(rawSignalCSVFile, StimulusFreqArray)
+function mainPSDDecoder(rawSignalCSVFile, StimulusFreqArray)
 %StimulusFreqArray is set to for instance [7 12 15 20]
  
 [rawEEGSignal, Sampling_Hz, Electrodes, HowManyFiles] = fileProcessor(rawSignalCSVFile);
@@ -52,6 +52,7 @@ whos AveragedEEGArray_P300
 % === % === % === Signal cut and Filter for SSVEP === % === % === % === % === 
 % The beginning of the SSVEP signals, from 0.0 sec to 1.5 or 3.0 sec
 % (ex. totally 384 or 768 plots in 256Hz) are cut due to stumulation time gap
+%{
 CutoffPlots = StimulationPointsArray(1)/5;
 Duration1 = AveragedEEGArray_SSVEP(CutoffPlots+1:StimulationPointsArray(1), 1);
 Duration2 = AveragedEEGArray_SSVEP(StimulationPointsArray(1)+CutoffPlots+1:StimulationPointsArray(2), 1);
@@ -59,13 +60,14 @@ Duration3 = AveragedEEGArray_SSVEP(StimulationPointsArray(2)+CutoffPlots+1:Stimu
 Duration4 = AveragedEEGArray_SSVEP(StimulationPointsArray(3)+CutoffPlots+1:StimulationPointsArray(4), 1);
 
 AveragedEEGArray_SSVEP_Cut = vertcat(Duration1, Duration2, Duration3, Duration4);
+%}
 
-Hd_SSVEP = Filter_SSVEP_256Hz;
-AveragedEEG_Filt_SSVEP = filter(Hd_SSVEP, AveragedEEGArray_SSVEP_Cut);
+Hd_SSVEP = Filter_SSVEP;
+AveragedEEG_Filt_SSVEP = filter(Hd_SSVEP, AveragedEEGArray_SSVEP);
 
 % === % === % === DownSampling and Filter for P300 === % === % === % === % === 
 %LPF -> DownSampling
-Hd_P300 = Filter_P300_64Hz;
+Hd_P300 = Filter_P300;
 AveragedEEG_Filt_P300 = filter(Hd_P300, AveragedEEGArray_P300);
 AveragedEEG_Filt_P300_DownSampled_64Hz = decimate(AveragedEEG_Filt_P300, 4);
 

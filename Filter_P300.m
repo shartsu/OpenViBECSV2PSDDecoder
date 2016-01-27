@@ -1,4 +1,4 @@
-function Hd = Filter_P300_64Hz
+function Hd = Filter_P300
 %FILTER_P300 Returns a discrete-time filter object.
 
 % MATLAB Code
@@ -8,7 +8,7 @@ function Hd = Filter_P300_64Hz
 % Butterworth Bandpass filter designed using FDESIGN.BANDPASS.
 
 % All frequency values are in Hz.
-Fs = 64;  % Sampling Frequency
+Fs = 256;  % Sampling Frequency
 
 N   = 4;    % Order
 Fc1 = 0.1;  % First Cutoff Frequency

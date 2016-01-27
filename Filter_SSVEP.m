@@ -1,4 +1,4 @@
-function Hd = Filter_SSVEP_256Hz
+function Hd = Filter_SSVEP
 %FILTER_BANDPASS(5-27HZ) Returns a discrete-time filter object.
 
 % MATLAB Code
