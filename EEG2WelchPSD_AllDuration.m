@@ -14,23 +14,23 @@ title('Comparison to Welch Averaged PSD for each filtered signals')
 
 %AveragedEEG
 [pxx,f] = pwelch(AveragedEEG.', Window, Overlap, Scale, Sampling_Hz);
-plot(f, 10*log10(pxx),'-');
+plot(f, 10*log10(pxx),'-', 'LineWidth',2);
 
 hold on
 %AveragedEEG_Filtered_P300
 [pxx_SSVEP,f] = pwelch(AveragedEEG_Filt_SSVEP.', Window, Overlap, Scale, Sampling_Hz);
-plot(f, 10*log10(pxx_SSVEP),'-*');
+plot(f, 10*log10(pxx_SSVEP),'-', 'LineWidth',2);
 
 %AveragedEEG_Filtered_P300
 hold on
 [pxx_P300,f] = pwelch(AveragedEEG_Filt_P300.', Window, Overlap, Scale, Sampling_Hz64);
-plot(f, 10*log10(pxx_P300),'-x');
+plot(f, 10*log10(pxx_P300),'-', 'LineWidth',2);
 hold off
 
-set(ax,'XTick',0:5:256);
+set(ax,'XTick',0:5:128);
 xlabel('Frequency (Hz)')
 ylabel('Magnitude (dB)')
 legend('pxx-Normal(1-16Ch, onlyg.tecFilt)', 'pxx-SSVEP(9-16Ch, BP5-27Hz)', 'pxx-P300(1-8Ch, BP0.1-9Hz, Fs=64Hz)') 
-xlim([0 256])
+xlim([0 128])
 
 end

@@ -1,8 +1,34 @@
-function mainPSDDecoder(rawSignalCSVFile, StimulusFreqArray)
-%StimulusFreqArray is set to for instance [7 12 15 20]
+function main_PSDDecoder(rawSignalCSVFile, StimulusFreqArray)
+%    
+% :-:-:-:-:-:-:-:-:-: Up to date INFO :-:-:-:-:-:-:-:-:  
+%    
+% :-:-:-:-:-:-:-:-:-: Instruction :-:-:-:-:-:-:-:-:-:    
+%  
+% main_PSDDecoder(ARG_1(char), ARG_2(array));  
+%  
+% === Input ===    
+%    
+% ARG_1 rawSignalCSVFile(char): The file which includes signal duration  
+% during the experiment, you can choose the file from dialog box if you   
+% ARG_2 StimulusFreqArray(char): The list of the frequency of flicker stimulus(ex. [7 15 12 20])  
+%  
+% === Output ===  
+%  
+% Figure1: Comparison to Welch Averaged PSD for each filtered signals  
+% Figure2: All Duration Average Plot (Ch9-16, SSVEP)  
+% Figure3: All duration welch estimation  
+% Figure4: Each duration welch estimation  
+% Figure5: Raw EEG Signal during Trial for SSVEP, P300 and both  
+%  
+% === Example ===  
+%  
+% MATLAB > main_PSDDecoder('../User/DirectoryName/signalfile.csv', [7 15 12 20]);  
+% MATLAB > main_PSDDecoder([], [7 15 12 20]);  
+%  
+% :-:-:-:-: (C) Takumi Kodama, University of Tsukuba, Japan :-:-:-:-:  
  
+% === Data exploitation from csv files
 [rawEEGSignal, Sampling_Hz, Electrodes, HowManyFiles] = fileProcessor(rawSignalCSVFile);
-
 rawEEGSignalArray = rawEEGSignal(:, 2:(end-1));
 
 % === % === rawEEGSignalArray % === % === 
@@ -71,11 +97,13 @@ Hd_P300 = Filter_P300;
 AveragedEEG_Filt_P300 = filter(Hd_P300, AveragedEEGArray_P300);
 AveragedEEG_Filt_P300_DownSampled_64Hz = decimate(AveragedEEG_Filt_P300, 4);
 
-
 % === % === % === Graph Drawal % === % === % === 
 
+%For figure 1
 EEG2WelchPSD_AllDuration(AveragedEEGArray_16ch, AveragedEEG_Filt_SSVEP, AveragedEEG_Filt_P300_DownSampled_64Hz, Sampling_Hz);
+%For figure 2, 3 and 4
 MATLABfilt_EEG2WelchPSD_Stimulation4(AveragedEEG_Filt_SSVEP, Sampling_Hz, StimulationPointsArray, StimulusFreqArray);
+%For figure 5
 SigViewer_Raw_SSVEP_P300(AveragedEEGArray_16ch, AveragedEEG_Filt_SSVEP, AveragedEEG_Filt_P300_DownSampled_64Hz, StimulationPointsArray,  Sampling_Hz);
 %NormalFFT_Periodgram(AveragedEEGArray, AveragedEEG_Filt_SSVEP, AveragedEEG_Filt_P300_DownSampled_64Hz, Sampling_Hz);
 

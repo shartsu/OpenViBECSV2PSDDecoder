@@ -38,9 +38,7 @@ StimulusDuration4_Filter2 = filter(Hd2, Stimulus4_AveragedEEG);
 StimulusDuration4_Filter3 = filter(Hd3, Stimulus4_AveragedEEG);
 StimulusDuration4_Filter4 = filter(Hd4, Stimulus4_AveragedEEG);
 
-
 % === Welch ===
-
 Fs = Sampling_Hz; % ex. 256
 Window = floor(Sampling_Hz * 2.0); % ex. 512 (2 sec under 256Hz) or 307 (1.2 sec)
 Overlap = round(Sampling_Hz * 0.5); % ex. 128 (0.5 sec under 256Hz) or 77 (0.3 sec)
